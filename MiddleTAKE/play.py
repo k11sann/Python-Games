@@ -178,10 +178,10 @@ def gameLoop():
     while(True):
         if mainGame.current_lvl>=len(lvls):
             print("◄  ИГРА УСПЕШНО ПРОЙДЕНА  \n")
-            print("◄  УРОВНИ ПОЙДУТ СНАЧАЛА  ")
+            print("◄    СПАСИБО ЗА ИГРУ !")
             print("◣ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
             mainGame.current_lvl=0
-            time.sleep(1)
+            quit()
         #print("◤ Длина по оси Х: "+str(lvls[mainGame.current_lvl][0])
         #      +"\n┃ Длина по оси Y: "+str(lvls[mainGame.current_lvl][1])
         #      +"\n◣ Частота обновления: "+str(lvls[mainGame.current_lvl][2])+"\n")
