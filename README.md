@@ -2,8 +2,11 @@
 my python games
 
 # MIDDLEtake
-<img src="images/MIDDLATAKE.jpg" alt="Play now!" class="inline"/>
+<p align="left">[ Play ]</p>
+<img src="images/MIDDLATAKE.jpg" alt="Play now!">
 # HOTcold
-<img src="images/HOTcold.jpg" alt="Play now!" class="inline"/>
+<p align="left">[ Play ]</p>
+<img src="images/HOTcold.jpg" alt="Play now!">
 # RANDOMpassword
-<img src="images/Emoticons/cool.png" alt="hi" class="inline"/>
+<p align="left">[ Play ]</p>
+<img src="images/Emoticons/cool.png" alt="hi" class="inline">
