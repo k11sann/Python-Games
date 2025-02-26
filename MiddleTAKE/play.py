@@ -177,7 +177,7 @@ mainGame = QuadroGame()
 def gameLoop():
     while(True):
         if mainGame.current_lvl>=len(lvls):
-            print("◄  ИГРА УСПЕШНО ПРОЙДЕНА  \n")
+            print("◄  ИГРА УСПЕШНО ПРОЙДЕНА")
             print("◄    СПАСИБО ЗА ИГРУ !")
             print("◣ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
             mainGame.current_lvl=0
@@ -208,10 +208,13 @@ def gameLoop():
 def checkEnter():
     while(mainGame.gameEnd==False):
         enterKey = None
-        enterKey = input("")
-        if enterKey != None:
-            mainGame.diedCheck(True)
-            mainGame.setQuad(mainGame.curX, mainGame.curY)
+        try:
+            enterKey = input("")
+            if enterKey != None:
+                mainGame.diedCheck(True)
+                mainGame.setQuad(mainGame.curX, mainGame.curY)
+        except ValueError:
+            pass
             
 gameThread = threading.Thread(target=gameLoop)
 checkThread = threading.Thread(target=checkEnter)
