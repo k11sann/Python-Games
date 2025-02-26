@@ -17,8 +17,6 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
         [9, 13, 0.4, [2, 3], [5, 5], [2, 7], [5,9], [2,11]]
         ]
 
-secondary_middles = []
-
 class QuadroGame:
     def __init__(self):
         self.current_lvl = 1 # чит код по факту, писать уровни от 1 до ???
@@ -27,12 +25,13 @@ class QuadroGame:
         self.y = lvls[self.current_lvl][0]
         self.time = lvls[self.current_lvl][2]
         self.quads = [[defaultSimbol]* self.x for i in range(self.y)]
-        secondary_middles.clear()
+        self.secondary_middles = []
+        self.secondary_middles.clear()
         if len(lvls[self.current_lvl])>=3:
             for i in range(3, len(lvls[self.current_lvl])):
-                secondary_middles.append(lvls[self.current_lvl][i])
-            for i in range(0, len(secondary_middles)):
-                self.quads[secondary_middles[i][0]][secondary_middles[i][1]-1] = lineSimbol
+                self.secondary_middles.append(lvls[self.current_lvl][i])
+            for i in range(0, len(self.secondary_middles)):
+                self.quads[self.secondary_middles[i][0]][self.secondary_middles[i][1]-1] = lineSimbol
         self.gameEnd = False
         self.curX = 0
         self.curY = 0
@@ -46,12 +45,12 @@ class QuadroGame:
         self.y = lvls[self.current_lvl][0]
         self.time = lvls[self.current_lvl][2]
         self.quads = [[defaultSimbol]* self.x for i in range(self.y)]
-        secondary_middles.clear()
+        self.secondary_middles.clear()
         if len(lvls[self.current_lvl])>=3:
             for i in range(3, len(lvls[self.current_lvl])):
-                secondary_middles.append(lvls[self.current_lvl][i])
-            for i in range(0, len(secondary_middles)):
-                self.quads[secondary_middles[i][0]][secondary_middles[i][1]-1] = lineSimbol
+                self.secondary_middles.append(lvls[self.current_lvl][i])
+            for i in range(0, len(self.secondary_middles)):
+                self.quads[self.secondary_middles[i][0]][self.secondary_middles[i][1]-1] = lineSimbol
         self.gameEnd = False
         self.curX = 0
         self.curY = 0
@@ -88,14 +87,14 @@ class QuadroGame:
         self.curX=0
         self.curY+=1
         try:
-            if self.curNumMiddle <= len(secondary_middles) and self.curY == secondary_middles[self.curNumMiddle][1]:
-                if secondary_middles[self.curNumMiddle][0]-x0>0:
-                    for i in range(x0, secondary_middles[self.curNumMiddle][0]):
+            if self.curNumMiddle <= len(self.secondary_middles) and self.curY == self.secondary_middles[self.curNumMiddle][1]:
+                if self.secondary_middles[self.curNumMiddle][0]-x0>0:
+                    for i in range(x0, self.secondary_middles[self.curNumMiddle][0]):
                         self.quads[i][y0] = lineLowSimbol
-                elif secondary_middles[self.curNumMiddle][0]-x0<0:
-                    for i in range(secondary_middles[self.curNumMiddle][0]+1, x0):
+                elif self.secondary_middles[self.curNumMiddle][0]-x0<0:
+                    for i in range(self.secondary_middles[self.curNumMiddle][0]+1, x0):
                         self.quads[i][y0] = lineLowSimbol
-                self.curMiddle=secondary_middles[self.curNumMiddle][0]
+                self.curMiddle=self.secondary_middles[self.curNumMiddle][0]
                 self.curNumMiddle+=1
                 self.quads[x0][y0] = blockSimbol
             else:
@@ -153,11 +152,11 @@ class QuadroGame:
         
         if self.curX>self.curMiddle:
             self.curNumMiddle=0
-            secondary_middles = []
+            self.secondary_middles = []
             return True
         elif self.curX<self.curMiddle and self.check==True:
             self.curNumMiddle=0
-            secondary_middles = []
+            self.secondary_middles = []
             return True
         else:
             return False
