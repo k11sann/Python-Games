@@ -2,7 +2,8 @@
 my python games
 
 # MIDDLEtake
-
+<img src="images/Emoticons/cool.png" alt="hi" class="inline"/>
 # HOTcold
-
+<img src="images/Emoticons/cool.png" alt="hi" class="inline"/>
 # RANDOMpassword
+<img src="images/Emoticons/cool.png" alt="hi" class="inline"/>
