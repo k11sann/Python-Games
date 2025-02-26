@@ -89,7 +89,6 @@ class QuadroGame:
         self.curY+=1
         try:
             if self.curNumMiddle <= len(secondary_middles) and self.curY == secondary_middles[self.curNumMiddle][1]:
-                #print("NGNJWEGJKENWJKGW "+str(secondary_middles[self.curNumMiddle][0]))
                 if secondary_middles[self.curNumMiddle][0]-x0>0:
                     for i in range(x0, secondary_middles[self.curNumMiddle][0]):
                         self.quads[i][y0] = lineLowSimbol
@@ -182,9 +181,6 @@ def gameLoop():
             print("◣ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
             mainGame.current_lvl=0
             quit()
-        #print("◤ Длина по оси Х: "+str(lvls[mainGame.current_lvl][0])
-        #      +"\n┃ Длина по оси Y: "+str(lvls[mainGame.current_lvl][1])
-        #      +"\n◣ Частота обновления: "+str(lvls[mainGame.current_lvl][2])+"\n")
         mainGame.gameEnd=False
         if mainGame.gameEnd==False:
             mainGame.setUp()
