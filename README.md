@@ -10,4 +10,4 @@ my python games
 <img src="images/HOTcold.jpg" alt="Play now!" style="display: block; margin: auto;" />
 # RANDOMpassword
 <p align="left">[ Play ]</p>
-<img src="images/Emoticons/cool.png" alt="hi" style="display: block; margin: auto;" />
+<img src="images/RANDOMPASSWORD.jpg" alt="Play now!" style="display: block; margin: auto;" />
