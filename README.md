@@ -5,7 +5,7 @@ my python games
 <p align="left"><a href="https://github.com/k11sann/Python-Games/tree/main/MiddleTAKE" class="button-class">[ PLAY ]</a></p>
 <p align="left">11 Уровней</p>
 <p align="left">Интересный геймплей с разнообразием механик</p>
-<img src="images/MIDDLATAKE.jpg" alt="Play now!" style="display: block; margin: auto;" align="right"/>
+<img src="images/MIDDLATAKE.jpg" align="right" alt="Play now!" style="display: block; margin: auto;"/>
 
 # HOTcold
 <p align="left"><a href="https://github.com/k11sann/Python-Games/tree/main/HOTcold" class="button-class">[ PLAY ]</a></p>
