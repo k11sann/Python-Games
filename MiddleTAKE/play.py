@@ -208,6 +208,7 @@ class QuadroGame:
         else:
             return False
 
+print(" ▰ ▰ ▰  MiddleTAKE ▰ ▰ ▰\n\nРекомендуется открыть консоль повыше\n")
 choose = input("Хотите ли вы узнать правила игры? [Y/N] \nВаш Ответ: ")
 
 if str(choose).lower()=="y":
