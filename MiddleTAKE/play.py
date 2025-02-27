@@ -105,7 +105,7 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
 
 class QuadroGame:
     def __init__(self):
-        self.current_lvl = 1 # чит код по факту, писать уровни от 1 до ???
+        self.current_lvl = 14 # чит код по факту, писать уровни от 1 до ???
         self.current_lvl-=1
         self.x = lvls[self.current_lvl][1]
         self.y = lvls[self.current_lvl][0]
@@ -331,8 +331,6 @@ class QuadroGame:
     def diedCheck(self, check0=None):
         if check0==True:
             self.check=check0
-        #print("curx "+str(self.curX))
-        #print("middle "+str(self.curMiddle))
         if self.flipX==False:
             if self.curX>self.curMiddle:
                 self.secondary_middles = []
@@ -389,13 +387,10 @@ def gameLoop():
                 
                 time.sleep(mainGame.time)
                 if choose!=None:
-                    #os.system("cls") if os.name == 'nt' else os.system("clear")
                     sys.stdout.flush()
                 mainGame.check=False
                 mainGame.moveQuad()
                 mainGame.printQuad()
-                #print("curX = "+str(mainGame.curX+1)+"; X = "+str(mainGame.y)+"; BUTTON = "+str(mainGame.buttonPress)+"; FLIP = "+str(mainGame.flipX))
-                #print("curY = "+str(mainGame.curY)+"; Y = "+str(mainGame.x-1)+"; NEW MIDDLE = "+str(mainGame.curMiddle))
                     
 def checkEnter():
     while(mainGame.gameEnd==False):
