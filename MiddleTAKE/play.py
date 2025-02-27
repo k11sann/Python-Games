@@ -4,53 +4,108 @@ defaultSimbol = "✆ "
 lineSimbol =    "█ "
 arrowSimbol =   "▼ "
 blockSimbol =   "✖ "
-borderSimbol =  " ▞ "
+borderSimbol =  " ◫ "
 lineLowSimbol = "━ "
 buttonSimbol =  "� "
 speedUpSimbol = " ➹ "
+reverseSimbol = " ↺ "
 
 lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется не чётное ], 2 - размер по y, 3 - таймер обновления
-        [13, 7, 0.4],
-        [9, 9, 0.3],
-        [7, 11, 0.25],
-        [9, 6, 0.5, # 2акт
-            [7, 3] # Смещение центра, x/y
+        [9, 9, 0.3], #2
+        [7, 11, 0.25], #3
+        [9, 6, 0.5, # 2акт 4
+            ["middle", 7, 3] # Смещение центра, x/y
         ],
-        [11, 8, 0.45, 
-            [7, 3], 
-            [3, 5]
+        [11, 8, 0.45, #5
+            ["middle", 7, 3], 
+            ["middle", 3, 5]
         ],
-        [9, 15, 0.35, 
-            [3, 3], 
-            [7, 5], 
-            [5, 8], 
-            [2,12]
+        [9, 11, 0.35, #6
+            ["middle", 2, 3], 
+            ["middle", 7, 5], 
+            ["middle", 5, 7], 
+            ["middle", 2,9]
         ],
-        [9, 13, 0.4, 
-            [2, 3], 
-            [5, 5], 
-            [2, 7], 
-            [5,9], 
-            [2,11]
+        [13, 6, 0.55, # 3акт 7
+            ["middle", 9, 3],
+            ["speedup", 0.2, 3], # Смена скорости
         ],
-        [13, 6, 0.55, # 3акт
-            [9, 3, ["speedup", 0.2]], # Смена скорости
+        [7, 8, 0.8, #8
+            ["speedup", 0.5, 4],
+            ["speedup", 0.3, 6]
         ],
-        [7, 8, 0.8,
-            [2, 3, ["speedup", 0.5]],
-            [4, 5, ["speedup", 0.3]]
+        [11, 10, 0.4, # 9
+            ["middle", 3, 3],
+            ["speedup", 0.25, 3],
+            ["middle", 7, 5],
+            ["speedup", 0.15, 5],
+            ["middle", 3, 7],
+            ["speedup", 0.8, 7],
+            ["middle", 8, 8],
+            ["speedup", 0.25, 8],
         ],
-        [11, 10, 0.4,
-            [4, 3, ["speedup", 0.25]],
-            [5, 5, ["speedup", 0.15]],
-            [3, 7, ["speedup", 0.8]],
-            [8, 8, ["speedup", 0.25]]
-        ]
+        [9, 9, 0.4,  #10
+            ["middle", 8, 1], 
+            ["flipX", 3], 
+            ["middle", 4, 3],
+            ["flipX", 5], 
+            ["middle", 2, 5], 
+            ["flipX", 7], 
+            ["middle", 4, 7]
+        ],
+        [9, 13, 0.4,  #11
+            ["middle", 2, 3], 
+            ["flipX", 3], 
+            ["middle", 5, 5],
+            ["flipX", 5], 
+            ["middle", 2, 7], 
+            ["flipX", 7], 
+            ["speedup", 0.3, 7],
+            ["middle", 5, 9], 
+            ["flipX", 9], 
+            ["speedup", 0.25, 9],
+            ["middle", 2, 11],
+            ["flipX", 11] 
+        ],
+        [11,10,0.45, #12
+            ["middle", 1, 1],
+            ["flipX", 1],
+            ["middle", 3, 2],
+            ["flipX", 2],
+            ["middle", 5, 3],
+            ["flipX", 3],
+            ["middle", 7, 4],
+            ["flipX", 4],
+            ["middle", 5, 5],
+            ["flipX", 5],
+            ["speedup", 0.275, 4],
+            ["middle", 7, 6],
+            ["flipX", 6],
+            ["middle", 5, 7],
+            ["flipX", 7],
+            ["middle", 3, 8],
+            ["flipX", 8],
+            ["middle", 1, 9],
+            ["flipX", 9],
+        ],
+        [9, 6, 0.4, #13
+            ["button", [6, 2], 3] # x1 кпнока ,x2 центр /y
+        ],
+        [13, 11, 0.4, #14
+            ["button", [2, 8], 3],
+            ["middle", 9, 5],
+            ["flipX", 4],
+            ["middle", 3, 6],
+            ["flipX", 5],
+            ["speedup", 0.3, 5],
+            ["flipX", 6],
+            ["button", [5, 9], 8],
+        ],
         ]
 
 class QuadroGame:
     def __init__(self):
-        self.current_lvl = 1 # чит код по факту, писать уровни от 1 до ???
+        self.current_lvl = 14 # чит код по факту, писать уровни от 1 до ???
         self.current_lvl-=1
         self.x = lvls[self.current_lvl][1]
         self.y = lvls[self.current_lvl][0]
@@ -62,14 +117,19 @@ class QuadroGame:
             for i in range(3, len(lvls[self.current_lvl])):
                 self.secondary_middles.append(lvls[self.current_lvl][i])
             for i in range(0, len(self.secondary_middles)):
-                self.quads[self.secondary_middles[i][0]][self.secondary_middles[i][1]-1] = lineSimbol
+                if self.secondary_middles[i][0]=="middle":
+                    self.quads[self.secondary_middles[i][1]][self.secondary_middles[i][2]-1] = lineSimbol
+                if self.secondary_middles[i][0]=="button":
+                    self.quads[self.secondary_middles[i][1][0]][self.secondary_middles[i][2]-1] = blockSimbol
+                    self.quads[self.secondary_middles[i][1][1]][self.secondary_middles[i][2]-1] = buttonSimbol
         self.gameEnd = False
         self.curX = 0
         self.curY = 0
         self.curMiddle = 0
-        self.curNumMiddle = 0
         self.check = False
         self.died = False
+        self.flipX = False
+        self.buttonPress = False
         
     def setUp(self):
         self.x = lvls[self.current_lvl][1]
@@ -81,14 +141,18 @@ class QuadroGame:
             for i in range(3, len(lvls[self.current_lvl])):
                 self.secondary_middles.append(lvls[self.current_lvl][i])
             for i in range(0, len(self.secondary_middles)):
-                self.quads[self.secondary_middles[i][0]][self.secondary_middles[i][1]-1] = lineSimbol
+                if self.secondary_middles[i][0]=="middle":
+                    self.quads[self.secondary_middles[i][1]][self.secondary_middles[i][2]-1] = lineSimbol
+                if self.secondary_middles[i][0]=="button":
+                    self.quads[self.secondary_middles[i][1][0]][self.secondary_middles[i][2]-1] = blockSimbol
+                    self.quads[self.secondary_middles[i][1][1]][self.secondary_middles[i][2]-1] = buttonSimbol
         self.gameEnd = False
         self.curX = 0
         self.curY = 0
         self.curMiddle = 0
-        self.curNumMiddle = 0
         self.check = False
         self.died = False
+        self.flipX = False
         self.startQuad()
         
     def gameResult(self, result):
@@ -108,49 +172,111 @@ class QuadroGame:
     def setQuad(self, x0, y0):
         if (self.diedCheck()==True):
             self.died=True    
+
+        changingX=False
         try:
-            if self.quads[self.curX-1][self.curY]!=lineSimbol and self.quads[self.curX-1][self.curY]!=blockSimbol:
-                self.quads[self.curX-1][self.curY] = defaultSimbol
+            if self.flipX==False:
+                if self.quads[self.curX-1][self.curY]!=lineSimbol and self.quads[self.curX-1][self.curY]!=blockSimbol and self.quads[self.curX][self.curY]!=buttonSimbol:
+                    self.quads[self.curX-1][self.curY] = defaultSimbol
+            else:
+                if self.quads[self.curX+1][self.curY]!=lineSimbol and self.quads[self.curX+1][self.curY]!=blockSimbol and self.quads[self.curX][self.curY]!=buttonSimbol:
+                    self.quads[self.curX+1][self.curY] = defaultSimbol
         except ValueError:
             pass
         
-        self.curX=0
         self.curY+=1
+
+        if self.quads[x0][y0-1]!=lineLowSimbol and self.quads[x0][y0-1]!=blockSimbol and self.quads[x0][y0-1]!=buttonSimbol:
+            self.quads[x0][y0] = lineSimbol
+
         try:
-            if self.curNumMiddle <= len(self.secondary_middles) and self.curY == self.secondary_middles[self.curNumMiddle][1]:
-                if self.secondary_middles[self.curNumMiddle][0]-x0>0:
-                    for i in range(x0, self.secondary_middles[self.curNumMiddle][0]):
-                        self.quads[i][y0] = lineLowSimbol
-                elif self.secondary_middles[self.curNumMiddle][0]-x0<0:
-                    for i in range(self.secondary_middles[self.curNumMiddle][0]+1, x0):
-                        self.quads[i][y0] = lineLowSimbol
 
-                for i in range(2, len(self.secondary_middles[self.curNumMiddle])): # speedup
-                    if self.secondary_middles[self.curNumMiddle][i][0].lower()=="speedup" and self.secondary_middles[self.curNumMiddle][1]==self.curY:
-                        self.time = self.secondary_middles[self.curNumMiddle][i][1]
+            for i in range(0, len(self.secondary_middles)): # event checker
+                nameEvent = str(self.secondary_middles[i][0]).lower()
+                if nameEvent=="speedup" and self.secondary_middles[i][2]==self.curY:
+                    self.time = self.secondary_middles[i][1]
+                if nameEvent=="middle" and self.secondary_middles[i][2]==self.curY:
+                    self.curMiddle = self.secondary_middles[i][1]
+                    self.quads[x0][y0] = blockSimbol
+                    if self.secondary_middles[i][1]-x0>0:
+                        for i in range(x0+1, self.secondary_middles[i][1]):
+                            self.quads[i][y0] = lineLowSimbol
+                    elif self.secondary_middles[i][1]-x0<0:
+                        for i in range(self.secondary_middles[i][1]+1, x0):
+                            self.quads[i][y0] = lineLowSimbol
+                if nameEvent=="button" and (self.secondary_middles[i][2]==self.curY or self.secondary_middles[i][2]==self.curY-1):
+                    if self.buttonPress==True and self.curMiddle==self.secondary_middles[i][1][1]:
+                        changingX=True
+                        self.buttonPress=False
+                        if self.flipX==True:
+                            self.flipX=False
+                        else:
+                            self.flipX=True
 
-                self.curMiddle=self.secondary_middles[self.curNumMiddle][0]
-                self.curNumMiddle+=1
-                self.quads[x0][y0] = blockSimbol
-            else:
-                self.quads[x0][y0] = lineSimbol
+                        self.curMiddle = self.secondary_middles[i][1][0]
+                        self.quads[self.curMiddle][self.curY-2] = lineSimbol
+                        #self.check==False
+                        self.curY-=1
+                    elif self.buttonPress==False and self.curMiddle!=self.secondary_middles[i][1][0]:
+                        changingX=True
+                        #self.check==False
+                        self.quads[x0][y0] = blockSimbol
+                        self.curMiddle = self.secondary_middles[i][1][1]
+                        self.buttonPress=True
+                        if self.secondary_middles[i][1][1]-self.secondary_middles[i][1][0]>0:
+                            for i in range(self.secondary_middles[i][1][0]+1, self.secondary_middles[i][1][1]):
+                                if self.quads[i][y0]!=blockSimbol and self.quads[i][y0]!=buttonSimbol and self.quads[i][y0]!=lineSimbol:
+                                    self.quads[i][y0] = lineLowSimbol
+                        elif self.secondary_middles[i][1][1]-self.secondary_middles[i][1][0]<0:
+                            if self.flipX==True:
+                                self.flipX=False
+                            else:
+                                self.flipX=True
+                            for i in range(self.secondary_middles[i][1][1], self.secondary_middles[i][1][0]+1):
+                                if self.quads[i][y0]!=blockSimbol and self.quads[i][y0]!=buttonSimbol and self.quads[i][y0]!=lineSimbol:
+                                    self.quads[i][y0] = lineLowSimbol
+                if nameEvent=="flipx" and self.secondary_middles[i][1]==self.curY:
+                    if self.flipX==True:
+                        self.flipX=False
+                    else:
+                        self.flipX=True
         except IndexError:
             self.quads[x0][y0] = lineSimbol
+
+        if changingX==False: # auto x
+            if self.flipX==True:
+                if self.buttonPress==True:
+                    self.curX=x0
+                else:
+                    self.curX=self.y-2
+            else:
+                if self.buttonPress==True:
+                    self.curX=x0
+                else:
+                    self.curX=0
         
     def moveQuad(self):
         if self.curY <= self.x-2:
             try:
-                if self.quads[self.curX][self.curY]!=lineSimbol and self.quads[self.curX][self.curY]!=lineSimbol:
+                if self.quads[self.curX][self.curY]!=lineSimbol and self.quads[self.curX][self.curY]!=blockSimbol and self.quads[self.curX][self.curY]!=buttonSimbol:
                     self.quads[self.curX][self.curY] = arrowSimbol
             except ValueError:
                 pass
             
             try:
-                if self.quads[self.curX-1][self.curY]!=lineSimbol and self.quads[self.curX-1][self.curY]!=blockSimbol:
-                    self.quads[self.curX-1][self.curY] = defaultSimbol
+                if self.flipX==False:
+                    if self.quads[self.curX-1][self.curY]!=lineSimbol and self.quads[self.curX-1][self.curY]!=blockSimbol and self.quads[self.curX-1][self.curY]!=buttonSimbol:
+                        self.quads[self.curX-1][self.curY] = defaultSimbol
+                else:
+                    if self.quads[self.curX+1][self.curY]!=lineSimbol and self.quads[self.curX+1][self.curY]!=blockSimbol and self.quads[self.curX+1][self.curY]!=buttonSimbol:
+                        self.quads[self.curX+1][self.curY] = defaultSimbol
             except ValueError:
                 pass
-            self.curX+=1
+
+            if self.flipX==False: # проверка на реверс
+                self.curX+=1
+            else:
+                self.curX-=1
         
         
     def startQuad(self):
@@ -158,11 +284,11 @@ class QuadroGame:
         self.setQuad(self.curMiddle, 0)
         
     def printQuad(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
         if self.curY<=self.x:
             fullPrint=""
             quadStr=""
-            simbolPrint=borderSimbol
+            simbolPrint1=borderSimbol
+            simbolPrint2=borderSimbol
             fullPrint+="\n\n"
             fullPrint+="У-"+str(self.current_lvl+1)+str(" ▰"*int(self.y+1))
             fullPrint+="\n"
@@ -170,43 +296,65 @@ class QuadroGame:
                 for j in range(self.y):
                     quadStr+=self.quads[j][i]
 
-                if simbolPrint!=borderSimbol:
-                    simbolPrint=borderSimbol
+                if simbolPrint1!=borderSimbol or simbolPrint2!=borderSimbol:
+                    simbolPrint1=borderSimbol
+                    simbolPrint2=borderSimbol
 
                 for k in range(len(self.secondary_middles)): # speedup print
-                    for l in range(2,len(self.secondary_middles[k])):
-                        if self.secondary_middles[k][l][0]=="speedup" and self.secondary_middles[k][1]==i:
-                            simbolPrint=speedUpSimbol
+                    eventName = str(self.secondary_middles[k][0]).lower()
+                    if eventName=="speedup" and self.secondary_middles[k][2]==i:
+                        simbolPrint1=speedUpSimbol
+                    if eventName=="flipx" and self.secondary_middles[k][1]==i:
+                        simbolPrint2=reverseSimbol    
 
                 if i+1<10:
-                    quadStr=("0"+str(i+1)+simbolPrint+quadStr)
+                    quadStr=("0"+str(i+1)+simbolPrint1+" "+quadStr)+simbolPrint2
                 else:
-                    quadStr=(str(i+1)+simbolPrint+quadStr)
+                    quadStr=(str(i+1)+simbolPrint1+" "+quadStr)+simbolPrint2
                 fullPrint+=quadStr+"\n"
                 quadStr=""
             fullPrint+="i- "+str(" ▰"*int(mainGame.y+1))+"\n"
             fullPrint+="◄  НАЖИМАЙ ENTER  \n"
-            if self.current_lvl==4:
+            if self.current_lvl==3:
                 fullPrint+="◄ Сначала закончите первый стобец, а затем закончите второй [ "+blockSimbol+" символ законч. столбца ]\n"
-            if self.current_lvl==8:
+            if self.current_lvl==6:
                 fullPrint+="◄ Значок ["+speedUpSimbol+" ] меняет вашу текущую скорость, будьте осторожны\n"
+            if self.current_lvl==9:
+                fullPrint+="◄ Значок ["+reverseSimbol+" ] меняет направление движения\n"
+            if self.current_lvl==12:
+                fullPrint+="◄ Перед разблокировкой столбца вам нужно нажать [ "+buttonSimbol+" ]\n"
+                fullPrint+="◄ Затем крестик [ "+blockSimbol+"] разблокируется\n"
+                fullPrint+="◄ ?*? Вариативно изменяется направление движения от текущей позиции\n"
             fullPrint+="i- "+str(" ▰"*int(mainGame.y+1))
             print(fullPrint)
             
     def diedCheck(self, check0=None):
         if check0==True:
             self.check=check0
-        
-        if self.curX>self.curMiddle:
-            self.curNumMiddle=0
-            self.secondary_middles = []
-            return True
-        elif self.curX<self.curMiddle and self.check==True:
-            self.curNumMiddle=0
-            self.secondary_middles = []
-            return True
+        #print("curx "+str(self.curX))
+        #print("middle "+str(self.curMiddle))
+        if self.flipX==False:
+            if self.curX>self.curMiddle:
+                self.secondary_middles = []
+                self.buttonPress=False
+                return True
+            elif self.curX<self.curMiddle and self.check==True:
+                self.secondary_middles = []
+                self.buttonPress=False
+                return True
+            else:
+                return False
         else:
-            return False
+            if self.curX<self.curMiddle:
+                self.secondary_middles = []
+                self.buttonPress=False
+                return True
+            elif self.curX>self.curMiddle and self.check==True:
+                self.secondary_middles = []
+                self.buttonPress=False
+                return True
+            else:
+                return False
 
 print(" ▰ ▰ ▰  MiddleTAKE ▰ ▰ ▰\n\nРекомендуется открыть консоль повыше\n")
 choose = input("Хотите ли вы узнать правила игры? [Y/N] \nВаш Ответ: ")
@@ -243,9 +391,11 @@ def gameLoop():
                     break
                 
                 time.sleep(mainGame.time)
+                os.system('cls' if os.name == 'nt' else 'clear')
                 mainGame.check=False
                 mainGame.moveQuad()
                 mainGame.printQuad()
+                #print("curX = "+str(mainGame.curX+1)+"; X = "+str(mainGame.y)+"; BUTTON = "+str(mainGame.buttonPress)+"; FLIP = "+str(mainGame.flipX))
                 #print("curY = "+str(mainGame.curY)+"; Y = "+str(mainGame.x-1)+"; NEW MIDDLE = "+str(mainGame.curMiddle))
                     
 def checkEnter():
