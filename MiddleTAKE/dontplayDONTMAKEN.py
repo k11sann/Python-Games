@@ -38,8 +38,11 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
             [3, 7, ["speedup", 0.8]],
             [8, 8, ["speedup", 0.25]]
         ],
+        [9, 9, 0.3, 
+            [2, 3, ["reverseX"]]
+        ],
         [9, 13, 0.4, 
-            [2, 3], 
+            [2, 3, ["button", 5], ["reverseX"]], 
             [5, 5], 
             [2, 7], 
             [5,9], 
@@ -69,6 +72,7 @@ class QuadroGame:
         self.curNumMiddle = 0
         self.check = False
         self.died = False
+        self.flipX=False
         
     def setUp(self):
         self.x = lvls[self.current_lvl][1]
@@ -127,6 +131,11 @@ class QuadroGame:
                 for i in range(2, len(self.secondary_middles[self.curNumMiddle])): # speedup
                     if self.secondary_middles[self.curNumMiddle][i][0].lower()=="speedup" and self.secondary_middles[self.curNumMiddle][1]==self.curY:
                         self.time = self.secondary_middles[self.curNumMiddle][i][1]
+                    if self.secondary_middles[self.curNumMiddle][i][0].lower()=="reverseX" and self.secondary_middles[self.curNumMiddle][1]==self.curY:
+                        if self.flipX==True:
+                            self.flipX=False
+                        else:
+                            self.flipX=True
 
                 self.curMiddle=self.secondary_middles[self.curNumMiddle][0]
                 self.curNumMiddle+=1
@@ -149,7 +158,11 @@ class QuadroGame:
                     self.quads[self.curX-1][self.curY] = defaultSimbol
             except ValueError:
                 pass
-            self.curX+=1
+
+            if self.flipX==False: # проверка на реверс
+                self.curX+=1
+            else:
+                self.curX-=1
         
         
     def startQuad(self):
@@ -196,16 +209,28 @@ class QuadroGame:
         if check0==True:
             self.check=check0
         
-        if self.curX>self.curMiddle:
-            self.curNumMiddle=0
-            self.secondary_middles = []
-            return True
-        elif self.curX<self.curMiddle and self.check==True:
-            self.curNumMiddle=0
-            self.secondary_middles = []
-            return True
+        if self.flipX==False:
+            if self.curX>self.curMiddle:
+                self.curNumMiddle=0
+                self.secondary_middles = []
+                return True
+            elif self.curX<self.curMiddle and self.check==True:
+                self.curNumMiddle=0
+                self.secondary_middles = []
+                return True
+            else:
+                return False
         else:
-            return False
+            if self.curX<self.curMiddle:
+                self.curNumMiddle=0
+                self.secondary_middles = []
+                return True
+            elif self.curX>self.curMiddle and self.check==True:
+                self.curNumMiddle=0
+                self.secondary_middles = []
+                return True
+            else:
+                return False
 
 print(" ▰ ▰ ▰  MiddleTAKE ▰ ▰ ▰\n\nРекомендуется открыть консоль повыше\n")
 choose = input("Хотите ли вы узнать правила игры? [Y/N] \nВаш Ответ: ")
