@@ -1,4 +1,4 @@
-import time, threading, warnings 
+import time, threading, os
 
 defaultSimbol = "✆ "
 lineSimbol =    "█ "
@@ -106,7 +106,6 @@ class QuadroGame:
             time.sleep(1)
         
     def setQuad(self, x0, y0):
-            
         if (self.diedCheck()==True):
             self.died=True    
         try:
@@ -159,6 +158,7 @@ class QuadroGame:
         self.setQuad(self.curMiddle, 0)
         
     def printQuad(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
         if self.curY<=self.x:
             fullPrint=""
             quadStr=""
