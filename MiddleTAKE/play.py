@@ -1,4 +1,4 @@
-import time, threading, os
+import time, threading, os#, curses
 
 defaultSimbol = "✆ "
 lineSimbol =    "█ "
@@ -9,6 +9,21 @@ lineLowSimbol = "━ "
 buttonSimbol =  "� "
 speedUpSimbol = " ➹ "
 reverseSimbol = " ↺ "
+
+#def init_curses():
+#    stdscr = curses.initscr()
+#    curses.noecho()
+#    curses.cbreak()
+#    stdscr.keypad(True)
+#
+#init_curses()
+#
+#def clear_screen():
+#    try:
+#        stdscr.clear()
+#        stdscr.refresh()
+#    finally:
+#        curses.endwin()
 
 lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется не чётное ], 2 - размер по y, 3 - таймер обновления
         [9, 9, 0.3], #2
@@ -357,14 +372,11 @@ class QuadroGame:
                 return False
 
 print(" ▰ ▰ ▰  MiddleTAKE ▰ ▰ ▰\n\nРекомендуется открыть консоль повыше\n")
-choose = input("Хотите ли вы узнать правила игры? [Y/N] \nВаш Ответ: ")
-
-if str(choose).lower()=="y":
-    print("◤ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
-    print("   Правила игры\n")
-    print("Используйте ENTER, чтобы поставить стрелочку\nНажимайте клавишу заранее на 1 клетку до центральной линии\nВсего в игре "+str(len(lvls))+" уровней\n")
-    print("◣ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
-    choose = input("Вы хотите начать играть? [Нажмите ENTER]")
+print("◤ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
+print("   Правила игры\n")
+print("Используйте ENTER, чтобы поставить стрелочку\nНажимайте клавишу заранее на 1 клетку до центральной линии\nВсего в игре "+str(len(lvls))+" уровней\n")
+print("◣ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
+choose = input("Вы хотите начать играть? [Нажмите ENTER]")
 
 mainGame = QuadroGame()
     
@@ -391,7 +403,9 @@ def gameLoop():
                     break
                 
                 time.sleep(mainGame.time)
-                os.system('cls' if os.name == 'nt' else 'clear')
+                if choose!=None:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    #clear_screen()
                 mainGame.check=False
                 mainGame.moveQuad()
                 mainGame.printQuad()
