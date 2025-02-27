@@ -1,4 +1,4 @@
-import time, threading, os#, curses
+import time, threading, sys 
 
 defaultSimbol = "✆ "
 lineSimbol =    "█ "
@@ -9,21 +9,6 @@ lineLowSimbol = "━ "
 buttonSimbol =  "� "
 speedUpSimbol = " ➹ "
 reverseSimbol = " ↺ "
-
-#def init_curses():
-#    stdscr = curses.initscr()
-#    curses.noecho()
-#    curses.cbreak()
-#    stdscr.keypad(True)
-#
-#init_curses()
-#
-#def clear_screen():
-#    try:
-#        stdscr.clear()
-#        stdscr.refresh()
-#    finally:
-#        curses.endwin()
 
 lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется не чётное ], 2 - размер по y, 3 - таймер обновления
         [9, 9, 0.3], #2
@@ -172,7 +157,7 @@ class QuadroGame:
         
     def gameResult(self, result):
         if result==True:
-            print("◄  ЦЕНТР ВЗЯТ ☻  ")
+            print("◄\n  ЦЕНТР ВЗЯТ ☻  ")
             print("◣  "+str(" ▰"*int(mainGame.y+1)))
             if self.current_lvl>=len(lvls):
                 self.current_lvl=0
@@ -180,7 +165,7 @@ class QuadroGame:
                 self.current_lvl+=1
             time.sleep(1)
         else:
-            print("◄  ИГРА ПРОИГРАНА ☢ ")
+            print("\n◄  ИГРА ПРОИГРАНА ☢ ")
             print("◣  "+str(" ▰"*int(mainGame.y+1)))
             time.sleep(1)
         
@@ -304,7 +289,7 @@ class QuadroGame:
             quadStr=""
             simbolPrint1=borderSimbol
             simbolPrint2=borderSimbol
-            fullPrint+="\n\n"
+            fullPrint+="\n"*30
             fullPrint+="У-"+str(self.current_lvl+1)+str(" ▰"*int(self.y+1))
             fullPrint+="\n"
             for i in range(self.x-1):
@@ -341,7 +326,7 @@ class QuadroGame:
                 fullPrint+="◄ Затем крестик [ "+blockSimbol+"] разблокируется\n"
                 fullPrint+="◄ ?*? Вариативно изменяется направление движения от текущей позиции\n"
             fullPrint+="i- "+str(" ▰"*int(mainGame.y+1))
-            print(fullPrint)
+            sys.stdout.write(fullPrint)
             
     def diedCheck(self, check0=None):
         if check0==True:
@@ -383,7 +368,7 @@ mainGame = QuadroGame()
 def gameLoop():
     while(True):
         if mainGame.current_lvl>=len(lvls):
-            print("◄  ИГРА УСПЕШНО ПРОЙДЕНА")
+            print("\n◄  ИГРА УСПЕШНО ПРОЙДЕНА")
             print("◄    СПАСИБО ЗА ИГРУ !")
             print("◣ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
             mainGame.current_lvl=0
@@ -404,8 +389,8 @@ def gameLoop():
                 
                 time.sleep(mainGame.time)
                 if choose!=None:
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    #clear_screen()
+                    #os.system("cls") if os.name == 'nt' else os.system("clear")
+                    sys.stdout.flush()
                 mainGame.check=False
                 mainGame.moveQuad()
                 mainGame.printQuad()
