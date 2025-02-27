@@ -1,4 +1,4 @@
-import time, threading, sys 
+import time, threading, sys, random
 
 defaultSimbol = "✆ "
 lineSimbol =    "█ "
@@ -31,7 +31,9 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
             ["speedup", 0.2, 3], # Смена скорости
         ],
         [7, 8, 0.8, #8
+            ["middle", 1, 3],
             ["speedup", 0.5, 4],
+            ["middle", 2, 5],
             ["speedup", 0.3, 6]
         ],
         [11, 10, 0.4, # 9
@@ -100,7 +102,7 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
             ["speedup", 0.3, 5],
             ["flipX", 6],
             ["button", [5, 9], 8],
-        ],
+        ]
         ]
 
 class QuadroGame:
