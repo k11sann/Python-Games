@@ -1,25 +1,56 @@
-import time, threading
+import time, threading, warnings 
 
 defaultSimbol = "✆ "
-lineSimbol = "█ "
-arrowSimbol = "▼ "
-blockSimbol = "✖ "
-borderSimbol = " ▞ "
+lineSimbol =    "█ "
+arrowSimbol =   "▼ "
+blockSimbol =   "✖ "
+borderSimbol =  " ▞ "
 lineLowSimbol = "━ "
+buttonSimbol =  "� "
+speedUpSimbol = " ➹ "
 
 lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется не чётное ], 2 - размер по y, 3 - таймер обновления
         [13, 7, 0.4],
         [9, 9, 0.3],
         [7, 11, 0.25],
-        [9, 6, 0.5, [7, 3]],
-        [11, 8, 0.45, [7, 3], [3, 5]],
-        [9, 15, 0.35, [3, 3], [7, 5], [5, 8], [2,12]],
-        [9, 13, 0.4, [2, 3], [5, 5], [2, 7], [5,9], [2,11]]
+        [9, 6, 0.5, # 2акт
+            [7, 3] # Смещение центра, x/y
+        ],
+        [11, 8, 0.45, 
+            [7, 3], 
+            [3, 5]
+        ],
+        [9, 15, 0.35, 
+            [3, 3], 
+            [7, 5], 
+            [5, 8], 
+            [2,12]
+        ],
+        [9, 13, 0.4, 
+            [2, 3], 
+            [5, 5], 
+            [2, 7], 
+            [5,9], 
+            [2,11]
+        ],
+        [13, 6, 0.55, # 3акт
+            [9, 3, ["speedup", 0.2]], # Смена скорости
+        ],
+        [7, 8, 0.8,
+            [2, 3, ["speedup", 0.5]],
+            [4, 5, ["speedup", 0.3]]
+        ],
+        [11, 10, 0.4,
+            [4, 3, ["speedup", 0.25]],
+            [5, 5, ["speedup", 0.15]],
+            [3, 7, ["speedup", 0.8]],
+            [8, 8, ["speedup", 0.25]]
+        ]
         ]
 
 class QuadroGame:
     def __init__(self):
-        self.current_lvl = 1 # чит код по факту, писать уровни от 1 до ???
+        self.current_lvl = 11 # чит код по факту, писать уровни от 1 до ???
         self.current_lvl-=1
         self.x = lvls[self.current_lvl][1]
         self.y = lvls[self.current_lvl][0]
@@ -94,6 +125,11 @@ class QuadroGame:
                 elif self.secondary_middles[self.curNumMiddle][0]-x0<0:
                     for i in range(self.secondary_middles[self.curNumMiddle][0]+1, x0):
                         self.quads[i][y0] = lineLowSimbol
+
+                for i in range(2, len(self.secondary_middles[self.curNumMiddle])): # speedup
+                    if self.secondary_middles[self.curNumMiddle][i][0].lower()=="speedup" and self.secondary_middles[self.curNumMiddle][1]==self.curY:
+                        self.time = self.secondary_middles[self.curNumMiddle][i][1]
+
                 self.curMiddle=self.secondary_middles[self.curNumMiddle][0]
                 self.curNumMiddle+=1
                 self.quads[x0][y0] = blockSimbol
@@ -126,23 +162,33 @@ class QuadroGame:
         if self.curY<=self.x:
             fullPrint=""
             quadStr=""
+            simbolPrint=borderSimbol
             fullPrint+="\n\n"
             fullPrint+="У-"+str(self.current_lvl+1)+str(" ▰"*int(self.y+1))
-            if self.current_lvl==4:
-                fullPrint+=" Сначала закончите первый стобец, а затем закончите второй [ "+blockSimbol+" символ законч. столбца ]"
             fullPrint+="\n"
             for i in range(self.x-1):
                 for j in range(self.y):
                     quadStr+=self.quads[j][i]
 
+                for k in range(len(self.secondary_middles)): # speedup print
+                    for l in range(2,len(self.secondary_middles[k])):
+                        if self.secondary_middles[k][l][0]=="speedup" and i==self.secondary_middles[k][1]:
+                            simbolPrint=speedUpSimbol
+                        else:
+                            simbolPrint=borderSimbol
+
                 if i+1<10:
-                    quadStr=("0"+str(i+1)+borderSimbol+quadStr)
+                    quadStr=("0"+str(i+1)+simbolPrint+quadStr)
                 else:
-                    quadStr=(str(i+1)+borderSimbol+quadStr)
+                    quadStr=(str(i+1)+simbolPrint+quadStr)
                 fullPrint+=quadStr+"\n"
                 quadStr=""
             fullPrint+="i- "+str(" ▰"*int(mainGame.y+1))+"\n"
             fullPrint+="◄  НАЖИМАЙ ENTER  \n"
+            if self.current_lvl==4:
+                fullPrint+="◄ Сначала закончите первый стобец, а затем закончите второй [ "+blockSimbol+" символ законч. столбца ]\n"
+            if self.current_lvl==8:
+                fullPrint+="◄ Значок ["+speedUpSimbol+" ] меняет вашу текущую скорость, будьте осторожны\n"
             fullPrint+="i- "+str(" ▰"*int(mainGame.y+1))
             print(fullPrint)
             
