@@ -1,6 +1,3 @@
-# Python-Games
-my python games
-
 # MIDDLEtake [ Game of the Year Edition ]
 <p align="left"><a href="https://github.com/k11sann/Python-Games/tree/main/MiddleTAKE" class="button-class">[ PLAY ]</a></p>
 <p align="left">11 Уровней</p>
