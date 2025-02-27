@@ -50,7 +50,7 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
 
 class QuadroGame:
     def __init__(self):
-        self.current_lvl = 11 # чит код по факту, писать уровни от 1 до ???
+        self.current_lvl = 1 # чит код по факту, писать уровни от 1 до ???
         self.current_lvl-=1
         self.x = lvls[self.current_lvl][1]
         self.y = lvls[self.current_lvl][0]
@@ -170,12 +170,13 @@ class QuadroGame:
                 for j in range(self.y):
                     quadStr+=self.quads[j][i]
 
+                if simbolPrint!=borderSimbol:
+                    simbolPrint=borderSimbol
+
                 for k in range(len(self.secondary_middles)): # speedup print
                     for l in range(2,len(self.secondary_middles[k])):
-                        if self.secondary_middles[k][l][0]=="speedup" and i==self.secondary_middles[k][1]:
+                        if self.secondary_middles[k][l][0]=="speedup" and self.secondary_middles[k][1]==i:
                             simbolPrint=speedUpSimbol
-                        else:
-                            simbolPrint=borderSimbol
 
                 if i+1<10:
                     quadStr=("0"+str(i+1)+simbolPrint+quadStr)
