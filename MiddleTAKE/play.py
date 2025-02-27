@@ -105,7 +105,7 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
 
 class QuadroGame:
     def __init__(self):
-        self.current_lvl = 14 # чит код по факту, писать уровни от 1 до ???
+        self.current_lvl = 1 # чит код по факту, писать уровни от 1 до ???
         self.current_lvl-=1
         self.x = lvls[self.current_lvl][1]
         self.y = lvls[self.current_lvl][0]
