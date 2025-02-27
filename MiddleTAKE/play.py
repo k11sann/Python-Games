@@ -1,4 +1,4 @@
-import time, threading, sys, random
+import time, threading, sys
 
 defaultSimbol = "✆ "
 lineSimbol =    "█ "
