@@ -109,7 +109,7 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
         [9, 11, 0.4,
          ["skip", 2, 3],
          ["flipX", 5],
-         ["middle", 3, 6],
+         ["middle", 3, 8],
          ["skip", 6, 7],
         ]
         
@@ -231,40 +231,25 @@ class QuadroGame:
                         if self.curMiddle<self.secondary_middles[i][1]:
                             self.curMiddle = self.secondary_middles[i][1]
                     if self.secondary_middles[i][2]==self.curY:
-                        hasFound = "default"
-                        #skipStop = False
-                        for k in range(len(self.secondary_middles)):
-                            nameEvent2 = str(self.secondary_middles[k][0]).lower()
-                            if nameEvent2=="middle" and self.secondary_middles[k][2]-1==self.curY:
-                                hasFound=="middle"
-                                self.curMiddle = self.secondary_middles[k][1]
-                                #self.curMiddle = self.secondary_middles[k][1]
-                            #try:
-                            #    if nameEvent2=="skip" and self.secondary_middles[k][2]==self.curY and skipStop == False:
-                            #        hasFound=="skip"
-                            #        skipStop = True
-                            #        if self.flipX==False:
-                            #            if self.curMiddle<self.secondary_middles[k][1]:
-                            #                self.curMiddle = self.secondary_middles[k][1]
-                            #                print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-                            #                print(self.secondary_middles[k][1])
-                            #        else:
-                            #            if self.curMiddle>self.secondary_middles[k][1]:
-                            #                self.curMiddle = self.secondary_middles[k][1]
-                            #                #print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-                            #        #print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-                            #except ValueError:
-                            #    pass
-                        if hasFound=="default":
-                            self.curMiddle = self.getMiddle()
+                        self.curMiddle = self.getMiddle()
                         if self.flipX==False:
                             if self.curMiddle>self.curX+(numCheck*-1):
                                 editX = self.curX+(numCheck*-1)
                                 self.curY-=1
+                                for k in range(len(self.secondary_middles)):
+                                    nameEvent2 = str(self.secondary_middles[k][0]).lower()
+                                    if nameEvent2=="middle" and self.secondary_middles[k][2]==self.curY:
+                                        self.curMiddle = self.secondary_middles[k][1]
+                                        print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEOW")
                         else:
                             if self.curMiddle<self.curX+(numCheck*-1):
                                 editX = self.curX+(numCheck*-1)
                                 self.curY-=1
+                                for k in range(len(self.secondary_middles)):
+                                    nameEvent2 = str(self.secondary_middles[k][0]).lower()
+                                    if nameEvent2=="middle" and self.secondary_middles[k][2]==self.curY:
+                                        self.curMiddle = self.secondary_middles[k][1]
+                                        print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEOW")
                 if nameEvent=="button" and (self.secondary_middles[i][2]==self.curY or self.secondary_middles[i][2]==self.curY-1):
                     if self.buttonPress==True and self.curMiddle==self.secondary_middles[i][1][1]:
                         changingX=True
