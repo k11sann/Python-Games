@@ -1,3 +1,5 @@
+# game by Куса (k11sann), other games : https://github.com/k11sann/Python-Games/tree/main
+
 import time, threading, sys
 
 defaultSimbol = "✆ "
