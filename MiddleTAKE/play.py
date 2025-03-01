@@ -2,15 +2,16 @@
 
 import time, threading, sys
 
-defaultSimbol = "✆ "
+defaultSimbol = "∷ "
 lineSimbol =    "█ "
 arrowSimbol =   "▼ "
-blockSimbol =   "✖ "
+blockSimbol =   "Х "
 borderSimbol =  " ◫ "
 lineLowSimbol = "━ "
 buttonSimbol =  "� "
-speedUpSimbol = " ➹ "
-reverseSimbol = " ↺ "
+speedUpSimbol = " ↯ "
+reverseSimbol = " ☀ "
+skipSimbol = "◐ "
 
 lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется не чётное ], 2 - размер по y, 3 - таймер обновления
         [9, 9, 0.3], #2
