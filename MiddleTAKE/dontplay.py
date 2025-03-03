@@ -1,6 +1,6 @@
 # game by Куса (k11sann), other games : https://github.com/k11sann/Python-Games/tree/main
 
-import time, threading, sys
+import time, threading, sys, os
 
 defaultSimbol = "∷ "
 lineSimbol =    "█ "
@@ -131,7 +131,7 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
 
 class QuadroGame:
     def __init__(self):
-        self.current_lvl = 16 # чит код по факту, писать уровни от 1 до ???
+        self.current_lvl = 12 # чит код по факту, писать уровни от 1 до ???
         self.current_lvl-=1
         self.x = lvls[self.current_lvl][1]
         self.y = lvls[self.current_lvl][0]
@@ -155,9 +155,10 @@ class QuadroGame:
         self.curY = 0
         self.curMiddle = 0
         self.check = False
-        self.died = False
         self.flipX = False
         self.buttonPress = False
+        self.game_status = "title"
+        self.attempt = 0
         
     def setUp(self):
         self.x = lvls[self.current_lvl][1]
@@ -181,27 +182,31 @@ class QuadroGame:
         self.curY = 0
         self.curMiddle = 0
         self.check = False
-        self.died = False
         self.flipX = False
+        self.game_status = "inGame"
         self.startQuad()
         
     def gameResult(self, result):
         if result==True:
-            print("◄\n  ЦЕНТР ВЗЯТ ☻  ")
-            print("◣  "+str(" ▰"*int(mainGame.y+1)))
+            print("◄\n    ЦЕНТР ВЗЯТ ☻  ")
+            print("◄    ПОПЫТКА : "+str(self.attempt))
+            print("◣  "+str(" ▰"*int(self.y+1)))
             if self.current_lvl>=len(lvls):
                 self.current_lvl=0
             else:
                 self.current_lvl+=1
+            self.attempt=0
             time.sleep(1)
         else:
-            print("\n◄  ИГРА ПРОИГРАНА ☢ ")
-            print("◣  "+str(" ▰"*int(mainGame.y+1)))
+            self.attempt+=1
+            print("\n◄    ИГРА ПРОИГРАНА ☢ ")
+            print("◄    ПОПЫТКА : "+str(self.attempt))
+            print("◣  "+str(" ▰"*int(self.y+1)))
             time.sleep(1)
         
     def setQuad(self, x0, y0):
         if self.diedCheck()==True:
-            self.died=True    
+            self.game_status="died"    
 
         changingX=False
         editX = 0
@@ -295,7 +300,7 @@ class QuadroGame:
                     self.curX=editX
         
     def moveQuad(self):
-        if self.curY <= self.x-2 and self.curX!=self.y and self.curX!=-1 and self.died==False:
+        if self.curY <= self.x-2 and self.curX!=self.y and self.curX!=-1 and self.game_status!="died":
             try:
                 if self.quads[self.curX][self.curY]!=lineSimbol and self.quads[self.curX][self.curY]!=blockSimbol and self.quads[self.curX][self.curY]!=buttonSimbol and self.quads[self.curX][self.curY]!=skipSimbol:
                     self.quads[self.curX][self.curY] = arrowSimbol
@@ -319,7 +324,7 @@ class QuadroGame:
                 pass
 
             if self.quads[self.curX][self.curY]==skipSimbol:
-                self.died=True
+                self.game_status="died"
 
             if self.flipX==False: # проверка на реверс
                 self.curX+=1
@@ -365,7 +370,7 @@ class QuadroGame:
                 fullPrint+=quadStr+"\n"
                 quadStr=""
             fullPrint+="i- "+str(" ▰"*int(mainGame.y+1))+"\n"
-            fullPrint+="◄  НАЖИМАЙ ENTER  \n"
+            fullPrint+="◄    НАЖИМАЙ ENTER  \n"
             if self.current_lvl==3:
                 fullPrint+="◄ Сначала закончите первый стобец, а затем закончите второй [ "+blockSimbol+" символ законч. столбца ]\n"
             if self.current_lvl==6:
@@ -388,6 +393,7 @@ class QuadroGame:
                     if self.quads[self.curX][self.curY]!=skipSimbol:
                         self.secondary_middles = []
                         self.buttonPress=False
+                        self.game_status="showHint"
                         return True
                     else:
                         return False
@@ -398,7 +404,8 @@ class QuadroGame:
                     if self.quads[self.curX][self.curY]!=skipSimbol:
                         self.secondary_middles = []
                         self.buttonPress=False
-                        print("THIS DIED")
+                        #print("THIS DIED")
+                        self.game_status="showHint"
                         return True
                     else:
                         return False
@@ -411,6 +418,7 @@ class QuadroGame:
                 if self.quads[self.curX][self.curY]!=skipSimbol:
                     self.secondary_middles = []
                     self.buttonPress=False
+                    self.game_status="showHint"
                     return True
                 else:
                     return False
@@ -418,11 +426,19 @@ class QuadroGame:
                 if self.quads[self.curX][self.curY]!=skipSimbol:
                     self.secondary_middles = []
                     self.buttonPress=False
+                    self.game_status="showHint"
                     return True
                 else:
                     return False
             else:
                 return False
+            
+    def showHint(self):
+        fullPrint=""
+        fullPrint+="У-"+str(self.current_lvl+1)+str(" ▰"*int(self.y+1))
+        fullPrint+="\n ПОПЫТКА : "+str(self.attempt)+"\n"
+        fullPrint+="У-"+str(self.current_lvl+1)+str(" ▰"*int(self.y+1))
+        print(fullPrint)
 
 print(" ▰ ▰ ▰  MiddleTAKE ▰ ▰ ▰\n\nРекомендуется открыть консоль повыше\n")
 print("◤ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰ ▰\n")
@@ -445,24 +461,32 @@ def gameLoop():
         if mainGame.gameEnd==False:
             mainGame.setUp()
             while(mainGame.gameEnd==False):
-                if mainGame.diedCheck()==True or mainGame.died==True: #проигрыш
+                if mainGame.diedCheck()==True or mainGame.game_status=="died": #проигрыш
                     mainGame.gameEnd==True
                     mainGame.gameResult(False)
+                    mainGame.game_status=="showHint"
+                    #if os.name == 'nt':
+                    #    os.system('cls')  # для Windows
+                    #else:
+                    #    os.system('clear')  # для macOS и Linux
                     break
                 
                 if mainGame.curY == mainGame.x-1: # победа
                     mainGame.gameEnd==True
                     mainGame.gameResult(True)
+                    mainGame.game_status="win"
                     break
                 
                 time.sleep(mainGame.time)
                 if choose!=None:
                     sys.stdout.flush()
-                mainGame.check=False
-                mainGame.moveQuad()
-                mainGame.printQuad()
-                print("\ncur Middle "+str(mainGame.curMiddle))
-                print("\ncur xe "+str(mainGame.curX))
+                    
+                if mainGame.game_status=="inGame":
+                    mainGame.check=False
+                    mainGame.moveQuad()
+                    mainGame.printQuad()
+                #print("\ncur Middle "+str(mainGame.curMiddle))
+                #print("\ncur xe "+str(mainGame.curX))
                     
 def checkEnter():
     while(mainGame.gameEnd==False):
@@ -488,4 +512,4 @@ checkThread.join()
 # СПИСОК ИДЕЙ:
 # 1. Блок первых полей чтобы кубик начинал к примеру с 3 клетки
 # 2. Движущающий центр
-# 3. Мина 
+# 3. Мина (почти реализовал)
