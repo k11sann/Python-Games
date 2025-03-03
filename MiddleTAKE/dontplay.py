@@ -49,16 +49,7 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
             ["middle", 8, 8],
             ["speedup", 0.25, 8],
         ],
-        [9, 9, 0.4,  #10
-            ["middle", 8, 1], 
-            ["flipX", 3], 
-            ["middle", 4, 3],
-            ["flipX", 5], 
-            ["middle", 2, 5], 
-            ["flipX", 7], 
-            ["middle", 4, 7]
-        ],
-        [9, 13, 0.4,  #11
+        [9, 13, 0.4,  #10
             ["middle", 2, 3], 
             ["flipX", 3], 
             ["middle", 5, 5],
@@ -71,6 +62,15 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
             ["speedup", 0.25, 9],
             ["middle", 2, 11],
             ["flipX", 11] 
+        ],
+        [9, 9, 0.4,  #11
+            ["middle", 8, 1], 
+            ["flipX", 3], 
+            ["middle", 4, 3],
+            ["flipX", 5], 
+            ["middle", 2, 5], 
+            ["flipX", 7], 
+            ["middle", 4, 7]
         ],
         [11,10,0.45, #12
             ["middle", 1, 1],
@@ -106,18 +106,32 @@ lvls = [[11, 5, 0.5], # 1 - Размер по x [ рекомендуется н�
             ["flipX", 6],
             ["button", [5, 9], 8],
         ],
-        [9, 11, 0.4,
+        [9, 11, 0.4, #15
          ["skip", 2, 3],
          ["flipX", 5],
          ["middle", 3, 8],
          ["skip", 6, 7],
-        ]
+        ],
+        [9, 7, 0.4, #15.5
+         ["flipX", 1],
+         ["skip", 6, 2],
+        ],
+        [20, 11, 0.4, #16
+         ["skip", 2, 2],
+         ["skip", 5, 2],
+         ["skip", 9, 2],
+        ],
+        [13, 14, 0.4, #17
+         ["skip", 1, 2],
+         ["skip", 3, 2],
+         ["skip", 5, 2],
+        ],
         
         ]
 
 class QuadroGame:
     def __init__(self):
-        self.current_lvl = 15 # чит код по факту, писать уровни от 1 до ???
+        self.current_lvl = 16 # чит код по факту, писать уровни от 1 до ???
         self.current_lvl-=1
         self.x = lvls[self.current_lvl][1]
         self.y = lvls[self.current_lvl][0]
@@ -186,7 +200,7 @@ class QuadroGame:
             time.sleep(1)
         
     def setQuad(self, x0, y0):
-        if (self.diedCheck()==True):
+        if self.diedCheck()==True:
             self.died=True    
 
         changingX=False
@@ -201,7 +215,17 @@ class QuadroGame:
         except ValueError:
             pass
         
-        self.curY+=1
+        if self.flipX==False:
+            if self.quads[self.curX][self.curY]!=skipSimbol:
+                self.curY+=1
+            else:
+                editX=self.curX+1
+        else:
+            if self.quads[self.curX][self.curY]!=skipSimbol:
+                self.curY+=1
+            else:
+                editX=self.curX-1
+                print(editX)
 
         if self.quads[x0][y0-1]!=lineLowSimbol and self.quads[x0][y0-1]!=blockSimbol and self.quads[x0][y0-1]!=buttonSimbol and self.quads[x0][y0-1]!=skipSimbol and self.quads[x0][y0]!=skipSimbol:
             self.quads[x0][y0] = lineSimbol
@@ -221,35 +245,6 @@ class QuadroGame:
                     elif self.secondary_middles[i][1]-x0<0:
                         for i in range(self.secondary_middles[i][1]+1, x0):
                             self.quads[i][y0] = lineLowSimbol
-                if nameEvent=="skip" and (self.secondary_middles[i][2]==self.curY+1 or self.secondary_middles[i][2]==self.curY):
-                    numCheck = 1
-                    if self.flipX==False:
-                        if self.curMiddle>self.secondary_middles[i][1]:
-                            self.curMiddle = self.secondary_middles[i][1]
-                        numCheck = -1
-                    else:
-                        if self.curMiddle<self.secondary_middles[i][1]:
-                            self.curMiddle = self.secondary_middles[i][1]
-                    if self.secondary_middles[i][2]==self.curY:
-                        self.curMiddle = self.getMiddle()
-                        if self.flipX==False:
-                            if self.curMiddle>self.curX+(numCheck*-1):
-                                editX = self.curX+(numCheck*-1)
-                                self.curY-=1
-                                for k in range(len(self.secondary_middles)):
-                                    nameEvent2 = str(self.secondary_middles[k][0]).lower()
-                                    if nameEvent2=="middle" and self.secondary_middles[k][2]==self.curY:
-                                        self.curMiddle = self.secondary_middles[k][1]
-                                        print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEOW")
-                        else:
-                            if self.curMiddle<self.curX+(numCheck*-1):
-                                editX = self.curX+(numCheck*-1)
-                                self.curY-=1
-                                for k in range(len(self.secondary_middles)):
-                                    nameEvent2 = str(self.secondary_middles[k][0]).lower()
-                                    if nameEvent2=="middle" and self.secondary_middles[k][2]==self.curY:
-                                        self.curMiddle = self.secondary_middles[k][1]
-                                        print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEOW")
                 if nameEvent=="button" and (self.secondary_middles[i][2]==self.curY or self.secondary_middles[i][2]==self.curY-1):
                     if self.buttonPress==True and self.curMiddle==self.secondary_middles[i][1][1]:
                         changingX=True
@@ -292,7 +287,7 @@ class QuadroGame:
                 if self.buttonPress==True:
                     self.curX=x0
                 else:
-                    self.curX=self.y-2
+                    self.curX=self.y-1
             else:
                 if self.buttonPress==True:
                     self.curX=x0
@@ -300,7 +295,7 @@ class QuadroGame:
                     self.curX=editX
         
     def moveQuad(self):
-        if self.curY <= self.x-2:
+        if self.curY <= self.x-2 and self.curX!=self.y and self.curX!=-1 and self.died==False:
             try:
                 if self.quads[self.curX][self.curY]!=lineSimbol and self.quads[self.curX][self.curY]!=blockSimbol and self.quads[self.curX][self.curY]!=buttonSimbol and self.quads[self.curX][self.curY]!=skipSimbol:
                     self.quads[self.curX][self.curY] = arrowSimbol
@@ -309,13 +304,22 @@ class QuadroGame:
             
             try:
                 if self.flipX==False:
-                    if self.quads[self.curX-1][self.curY]!=lineSimbol and self.quads[self.curX-1][self.curY]!=blockSimbol and self.quads[self.curX-1][self.curY]!=buttonSimbol and self.quads[self.curX-1][self.curY]!=skipSimbol:
-                        self.quads[self.curX-1][self.curY] = defaultSimbol
+                    try:
+                        if self.quads[self.curX-1][self.curY]!=lineSimbol and self.quads[self.curX-1][self.curY]!=blockSimbol and self.quads[self.curX-1][self.curY]!=buttonSimbol and self.quads[self.curX-1][self.curY]!=skipSimbol:
+                            self.quads[self.curX-1][self.curY] = defaultSimbol
+                    except IndexError:
+                        pass
                 else:
-                    if self.quads[self.curX+1][self.curY]!=lineSimbol and self.quads[self.curX+1][self.curY]!=blockSimbol and self.quads[self.curX+1][self.curY]!=buttonSimbol and self.quads[self.curX+1][self.curY]!=skipSimbol:
-                        self.quads[self.curX+1][self.curY] = defaultSimbol
+                    try:
+                        if self.quads[self.curX+1][self.curY]!=lineSimbol and self.quads[self.curX+1][self.curY]!=blockSimbol and self.quads[self.curX+1][self.curY]!=buttonSimbol and self.quads[self.curX+1][self.curY]!=skipSimbol:
+                            self.quads[self.curX+1][self.curY] = defaultSimbol
+                    except IndexError:
+                        pass
             except ValueError:
                 pass
+
+            if self.quads[self.curX][self.curY]==skipSimbol:
+                self.died=True
 
             if self.flipX==False: # проверка на реверс
                 self.curX+=1
@@ -375,29 +379,48 @@ class QuadroGame:
             fullPrint+="i- "+str(" ▰"*int(mainGame.y+1))
             sys.stdout.write(fullPrint)
             
-    def diedCheck(self, check0=None):
+    def diedCheck(self, check0=None, die=None):
         if check0==True:
             self.check=check0
         if self.flipX==False:
             if self.curX>self.curMiddle:
-                self.secondary_middles = []
-                self.buttonPress=False
-                return True
+                try:
+                    if self.quads[self.curX][self.curY]!=skipSimbol:
+                        self.secondary_middles = []
+                        self.buttonPress=False
+                        return True
+                    else:
+                        return False
+                except IndexError:
+                    return True
             elif self.curX<self.curMiddle and self.check==True:
-                self.secondary_middles = []
-                self.buttonPress=False
-                return True
+                try:
+                    if self.quads[self.curX][self.curY]!=skipSimbol:
+                        self.secondary_middles = []
+                        self.buttonPress=False
+                        print("THIS DIED")
+                        return True
+                    else:
+                        return False
+                except IndexError:
+                    return True
             else:
                 return False
         else:
             if self.curX<self.curMiddle:
-                self.secondary_middles = []
-                self.buttonPress=False
-                return True
+                if self.quads[self.curX][self.curY]!=skipSimbol:
+                    self.secondary_middles = []
+                    self.buttonPress=False
+                    return True
+                else:
+                    return False
             elif self.curX>self.curMiddle and self.check==True:
-                self.secondary_middles = []
-                self.buttonPress=False
-                return True
+                if self.quads[self.curX][self.curY]!=skipSimbol:
+                    self.secondary_middles = []
+                    self.buttonPress=False
+                    return True
+                else:
+                    return False
             else:
                 return False
 
@@ -438,7 +461,8 @@ def gameLoop():
                 mainGame.check=False
                 mainGame.moveQuad()
                 mainGame.printQuad()
-                print("cur Middle "+str(mainGame.curMiddle))
+                print("\ncur Middle "+str(mainGame.curMiddle))
+                print("\ncur xe "+str(mainGame.curX))
                     
 def checkEnter():
     while(mainGame.gameEnd==False):
