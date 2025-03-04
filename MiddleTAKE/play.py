@@ -307,7 +307,7 @@ class QuadroGame:
                     self.curY+=1
                 else:
                     editX=self.curX+1
-                    print(self.flipX)
+                    #print(self.flipX)
             else:
                 if self.quads[self.curX][self.curY]!=skipSimbol:
                     self.curY+=1
